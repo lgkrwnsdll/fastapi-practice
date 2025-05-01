@@ -22,6 +22,8 @@ async def inject_session():
     """
     같은 요청 컨텍스트 내에서는 최초 호출 이후 캐시된 세션 반환
     라우터 메서드 반환 이후 yield 다음의 로직 수행
+
+    DB 작업이 없는 API에서는 DB 커넥션을 얻어오지 않아 효율적
     """
     session = async_session_factory()
     token = session_context.set(session)

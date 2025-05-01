@@ -13,6 +13,10 @@ class Router:
         print("=================================v2_router init=================================")
         self.service = service
 
+    @v2_router.get("/empty")
+    async def empty(self):
+        return
+
     @v2_router.get("/data")
     async def get_data(self):
         response = await self.service.get_data()
