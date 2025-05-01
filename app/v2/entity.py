@@ -4,12 +4,13 @@ from typing import Optional, List
 from sqlalchemy import (
     BigInteger, String, DateTime, ForeignKey
 )
+from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import (
     DeclarativeBase, Mapped, mapped_column, relationship
 )
 
 
-class BaseEntity(DeclarativeBase):
+class BaseEntity(DeclarativeBase, AsyncAttrs):
     pass
 
 

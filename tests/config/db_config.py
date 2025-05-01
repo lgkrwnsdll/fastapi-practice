@@ -20,7 +20,12 @@ test_async_engine = create_async_engine(
     # echo=True,
     # echo_pool="debug",
 )
-test_async_session_factory = async_sessionmaker(autocommit=False, autoflush=False, bind=test_async_engine)
+test_async_session_factory = async_sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=test_async_engine,
+    expire_on_commit=False
+)
 
 
 async def override_inject_session():

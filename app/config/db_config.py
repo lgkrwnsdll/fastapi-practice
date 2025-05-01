@@ -12,7 +12,12 @@ async_engine = create_async_engine(
     echo_pool="debug",
 )
 # 의존성 주입을 잘 활용하면 scoped_session 없이도 요청 별 트랜잭션 처리가 가능할 뿐 아니라 테스트 코드 설정이 더 용이해진다
-async_session_factory = async_sessionmaker(autocommit=False, autoflush=False, bind=async_engine)
+async_session_factory = async_sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=async_engine,
+    expire_on_commit=False
+)
 
 # Transactional 데코레이터를 프로덕션, 테스트 코드에서 모두 원활하게 사용할 수 있게 해주는 세션 컨텍스트 관리자
 session_context: ContextVar[AsyncSession] = ContextVar("session_context")
