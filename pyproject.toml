@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "di-test"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.12"
+uvicorn = "^0.34.2"
+sqlalchemy = "^2.0.40"
+pymysql = "^1.1.1"
+aiomysql = "^0.2.0"
+watchfiles = "^1.0.5"
+fastapi-utils = "^0.8.0"
+typing-inspect = "^0.9.0"
+pytest = "^8.3.5"
+pytest-asyncio = "^0.26.0"
+httpx = "^0.28.1"
+pydantic-settings = "^2.9.1"
+python-dotenv = "^1.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
