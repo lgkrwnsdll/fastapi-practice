@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, NullPool
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 
 from app.config.db_config import session_context
@@ -15,7 +15,8 @@ test_engine = create_engine(
 ASYNC_URL = f"mysql+aiomysql://{settings.db_username}:{settings.db_password}@localhost:3306/ddtesttest"
 test_async_engine = create_async_engine(
     ASYNC_URL,
-    pool_size=40,
+    # pool_size=40,
+    poolclass=NullPool,
     # echo=True,
     # echo_pool="debug",
 )
@@ -25,9 +26,12 @@ test_async_session_factory = async_sessionmaker(autocommit=False, autoflush=Fals
 async def override_inject_session():
     """
     AsyncClient와 FastAPI 앱을 활용한 테스트에서 적용 가능
+
     중첩 트랜잭션을 사용해 테스트 내에서 커밋이 일어나도 외부 트랜잭션의 롤백으로 초기화
-    
-    하나의 요청에서 두 개 이상의 독립된 트랜잭션을 활용하는 경우는 이 세션으로 테스트 불가
+
+    엔진이 여러 이벤트 루프에서 사용되는 경우, 기본 엔진 설정으로는 재사용되기 전 dispose() 처리가 되어야한다.
+    혹은 커넥션 풀을 사용하지 않아 dispose 할 필요가 없도록 NullPool을 설정해야 한다.
+    https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html#using-multiple-asyncio-event-loops
     """
     async with test_async_engine.connect() as conn:
         async with conn.begin() as trans:
@@ -37,6 +41,5 @@ async def override_inject_session():
 
             await trans.rollback()
 
-    await test_async_engine.dispose()  # 생략 시 여러 테스트를 실행하면 event loop 관련 에러 발생
     session_context.reset(token)
 

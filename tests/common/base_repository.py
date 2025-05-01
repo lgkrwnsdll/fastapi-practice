@@ -33,4 +33,3 @@ class BaseRepositoryTestCase(unittest.IsolatedAsyncioTestCase):
         await self.root_transaction.rollback()
 
         await self.connection.close()
-        await self.async_engine.dispose()

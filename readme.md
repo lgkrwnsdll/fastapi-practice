@@ -105,7 +105,7 @@ Percentage of the requests served within a certain time (ms)
 ### 3. 독립적인 테스트 실행
 > unittest로 클래스 기반 테스트 코드 작성
 > - ⚠️ 테스트 환경의 DB 세션 설정이 프로덕션과 완전히 일치하지는 않아 주의 필요
-> - 각 테스트 별 하나의 커넥션과 트랜잭션 내에서 작업이 이루어진다
+> - 각 테스트에서 하나의 DB 커넥션만을 사용하여 작업이 이루어진다
 - unittest의 setUp, tearDown을 테스트 클래스 및 메서드 별로 적절히 설정하여 테스트 간 영향이 없도록 처리
 - AsyncMock 사용 시 테스트 메서드 별로 제공
 - AsyncClient는 (중간에 종료하지 않으면) 재사용 가능
