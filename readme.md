@@ -132,3 +132,4 @@ https://devocean.sk.com/blog/techBoardDetail.do?ID=167025&boardType=techBlog
 ## TODO
 - HTTP 예외 처리
 - 동기 작업과의 성능 비교
+- 로깅, 모니터링

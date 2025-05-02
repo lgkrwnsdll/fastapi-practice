@@ -1,3 +1,5 @@
+import uuid
+
 from app.v2.repository import ChildRepository, ParentRepository
 from tests.common.base_repository import BaseRepositoryTestCase
 
@@ -15,8 +17,8 @@ class ChildRepositoryUnitTest(BaseRepositoryTestCase):
 
     async def test_create_child_and_verify(self):
         # 생성
-        await self.parent_repository.create_parent()
-        await self.child_repository.create_child()
+        await self.parent_repository.create_parent(uuid.uuid4().hex)
+        await self.child_repository.create_child(uuid.uuid4().hex)
         await self.session.commit()  # 세이브포인트 커밋
 
         # 검증

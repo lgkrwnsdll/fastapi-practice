@@ -22,17 +22,17 @@ class IntegrationTest(BaseIntegrationTestCase):
 
         responses = await asyncio.gather(*tasks)
 
-        child_id_list = []
-        parent_id_list = []
+        child_id_set = set()
+        parent_id_set = set()
         for response in responses:
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
             child, parent = response.json()
-            child_id_list.append(child.get('id'))
-            parent_id_list.append(parent.get('id'))
+            child_id_set.add(child.get('id'))
+            parent_id_set.add(parent.get('id'))
 
-        self.assertEqual(len(child_id_list), concurrency)
-        self.assertEqual(len(parent_id_list), concurrency)
+        self.assertEqual(len(child_id_set), concurrency)
+        self.assertEqual(len(parent_id_set), concurrency)
 
     async def test_get_data(self):
         response = await self.aclient.get("/v2/data")

@@ -1,15 +1,18 @@
+import uuid
+
 from fastapi import Depends
 
 from app.decorator import Transactional
+from app.v2.abstract_repository import AbstractChildRepository, inject_child_repository
 from app.v2.domain import ChildDomain, ParentDomain
-from app.v2.repository import ChildRepository, ParentRepository
+from app.v2.repository import ParentRepository
 
 
 class Service:
     def __init__(
             self,
-            child_repository: ChildRepository = Depends(),
-            parent_repository: ParentRepository = Depends()
+            child_repository: AbstractChildRepository = Depends(inject_child_repository()),  # 인터페이스 의존
+            parent_repository: ParentRepository = Depends()  # 구현체 의존
     ):
         print("=================================service init=================================")
         self.child_repository = child_repository
@@ -25,8 +28,8 @@ class Service:
 
     @Transactional()
     async def create_data(self) -> list:
-        await self.parent_repository.create_parent()
-        await self.child_repository.create_child()
+        await self.parent_repository.create_parent(uuid.uuid4().hex)
+        await self.child_repository.create_child(uuid.uuid4().hex)
 
         child_data = await self.child_repository.get_all_child()
         parent_data = await self.parent_repository.get_all_parent()
